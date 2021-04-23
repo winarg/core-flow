@@ -1,6 +1,6 @@
 ﻿namespace CoreFlow.Model.Enums
 {
-    public enum CoreFlowStatus
+    public enum CoreFlowTaskStatus
     {
         NotStarted = 0,
         Active = 1,

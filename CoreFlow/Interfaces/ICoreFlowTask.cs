@@ -1,7 +1,15 @@
 ﻿namespace CoreFlow.Model.Interfaces
 {
+    using CoreFlow.Model.Enums;
+    using System;
+
     public interface ICoreFlowTask : ICoreFlowBaseEntity
     {
+        DateTime? DateActivated { get; set; }
+        DateTime? DateCompleted { get; set; }
+
+        CoreFlowTaskStatus Status { get; set; }
+
         ICoreFlowEntity FlowCore { get; set; }
     }
 }
