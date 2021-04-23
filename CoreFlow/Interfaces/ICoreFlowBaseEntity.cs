@@ -1,6 +1,6 @@
 ﻿namespace CoreFlow.Model.Interfaces
 {
-    public interface IFlowCoreBaseEntity
+    public interface ICoreFlowBaseEntity
     {
         int Id { get; set; }
         int Name { get; set; }

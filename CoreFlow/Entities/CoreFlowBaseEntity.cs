@@ -2,7 +2,7 @@
 {
     using CoreFlow.Model.Interfaces;
 
-    public class FlowCoreBaseEntity : IFlowCoreBaseEntity
+    public class CoreFlowBaseEntity : ICoreFlowBaseEntity
     {
         public int Id { get; set; }
         public int Name { get; set; }
