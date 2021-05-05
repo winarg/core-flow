@@ -13,7 +13,7 @@
 
         ICoreFlowEntity FlowCore { get; set; }
 
-        Action<int> OnActivated { get; set; }
-        Action<int> OnCompleted { get; set; }
+        Action OnActivated { get; set; }
+        Action OnCompleted { get; set; }
     }
 }

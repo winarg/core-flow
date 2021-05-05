@@ -50,7 +50,7 @@ namespace CoreFlow.Engine
                 throw new CoreFlowException("Only a not started task can be activated.");
 
             if (task.OnActivated != null)
-                task.OnActivated.Invoke(0);
+                task.OnActivated.Invoke();
 
             if (task.TaskType == CoreFlowTaskType.End) {
                 if (!_engineHelper.CanFlowBeCompleted(flow))
@@ -79,7 +79,7 @@ namespace CoreFlow.Engine
                 throw new CoreFlowException("Only an active task can be completed.");
 
             if (task.OnCompleted != null)
-                task.OnCompleted.Invoke(0);
+                task.OnCompleted.Invoke();
 
             task.Status = CoreFlowTaskStatus.Completed;
             task.DateCompleted = DateTime.UtcNow;
