@@ -4,6 +4,7 @@
     using CoreFlow.Engine;
     using CoreFlow.Model.Entities;
     using CoreFlow.Model.Enums;
+    using System;
 
     [TestFixture]
     public class PlayerTests : TestBase
@@ -21,9 +22,22 @@
         {
             CoreFlowEntity testFlow = new();
 
+            bool onActivatedWasRun = false;
+            bool onCompletedWasRun = false;
+
             // Tasks
             var taskStart = new CoreFlowTask("Start", CoreFlowTaskType.Start);
             var taskAction = new CoreFlowTask("Action", CoreFlowTaskType.Action);
+            taskAction.OnActivated = t => {
+                onActivatedWasRun = true;
+                Console.WriteLine("Task Action was activated");
+            };
+
+            taskAction.OnCompleted = t => {
+                onCompletedWasRun = true;
+                Console.WriteLine("Task Action was completed");
+            };
+
             var taskEnd = new CoreFlowTask("End", CoreFlowTaskType.End);
 
             testFlow.Tasks.Add(taskStart);
@@ -48,6 +62,8 @@
             }
 
             Assert.AreEqual(CoreFlowStatus.Completed, testFlow.Status);
+            Assert.IsTrue(onActivatedWasRun);
+            Assert.IsTrue(onCompletedWasRun);
         }
 
         [Test]

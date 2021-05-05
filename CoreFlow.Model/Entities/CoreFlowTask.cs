@@ -14,6 +14,9 @@
         public CoreFlowTaskType TaskType { get; set; }
         public CoreFlowTaskStatus Status { get; set; }
 
+        public Action<int> OnActivated { get; set; }
+        public Action<int> OnCompleted { get; set; }
+
         public CoreFlowTask() {
         }
 
