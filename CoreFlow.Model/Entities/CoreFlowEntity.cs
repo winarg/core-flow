@@ -7,11 +7,17 @@
 
     public class CoreFlowEntity : CoreFlowBaseEntity, ICoreFlowEntity
     {
-        public DateTime DateCreated { get; set; }
-        public DateTime DateCompleted { get; set; }
+        public DateTime? DateStarted { get; set; }
+        public DateTime? DateCompleted { get; set; }
         public CoreFlowStatus Status { get; set; }
 
-        public IList<ICoreFlowTask> Tasks { get; set; }
-        public IList<ICoreFlowTransition> Transitions { get; set; }
+        public IList<CoreFlowTask> Tasks { get; set; }
+        public IList<CoreFlowTransition> Transitions { get; set; }
+
+        public CoreFlowEntity()
+        {
+            Tasks = new List<CoreFlowTask>();
+            Transitions = new List<CoreFlowTransition>();
+        }
     }
 }

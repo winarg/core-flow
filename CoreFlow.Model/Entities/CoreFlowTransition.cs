@@ -14,5 +14,15 @@
 
         public string Condition { get; set; }
         public bool Completed { get; set; }
+
+        public CoreFlowTransition() {
+        }
+
+        public CoreFlowTransition(string name, ICoreFlowTask fromTask, ICoreFlowTask toTask)
+        {
+            Name = name;
+            FromTask = fromTask;
+            ToTask = toTask;
+        }
     }
 }

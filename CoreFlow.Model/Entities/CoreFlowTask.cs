@@ -13,5 +13,14 @@
 
         public CoreFlowTaskType TaskType { get; set; }
         public CoreFlowTaskStatus Status { get; set; }
+
+        public CoreFlowTask() {
+        }
+
+        public CoreFlowTask(string name, CoreFlowTaskType type)
+        {
+            Name = name;
+            TaskType = type;
+        }
     }
 }

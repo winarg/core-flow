@@ -2,6 +2,8 @@
 namespace CoreFlow.Engine
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using CoreFlow.Model.Entities;
     using CoreFlow.Model.Enums;
     using CoreFlow.Model.Exceptions;
@@ -21,13 +23,20 @@ namespace CoreFlow.Engine
             if (flow.Status != Model.Enums.CoreFlowStatus.NotStarted)
                 throw new CoreFlowException("Only NotStarted flow can be started!");
 
-            var startTask = _engineHelper.GetEntryTask(flow);
-            var startTaskTransitions = _engineHelper.GetTaskTransitions(flow, startTask);
+            flow.Status = CoreFlowStatus.Active;
+            flow.DateStarted = DateTime.UtcNow;
 
-            foreach (var transition in startTaskTransitions)
-            {
-                ActivateTask(flow, transition.ToTask);
-            }
+            var startTask = _engineHelper.GetEntryTask(flow);
+
+            ActivateTask(flow, startTask);
+            CompleteTask(flow, startTask);
+
+            //var startTaskTransitions = _engineHelper.GetTaskTransitions(flow, startTask);
+
+            //foreach (var transition in startTaskTransitions)
+            //{
+            //    ActivateTask(flow, transition.ToTask);
+            //}
 
             return true;
         }
@@ -64,7 +73,7 @@ namespace CoreFlow.Engine
             CheckIfNull(task);
 
             if (task.Status != CoreFlowTaskStatus.Active)
-                throw new CoreFlowException("Only an task can be completed.");
+                throw new CoreFlowException("Only an active task can be completed.");
 
             task.Status = CoreFlowTaskStatus.Completed;
             task.DateCompleted = DateTime.UtcNow;
@@ -87,6 +96,11 @@ namespace CoreFlow.Engine
             }
 
             return true;
+        }
+
+        public IList<CoreFlowTask> GetActiveTasks(ICoreFlowEntity flow)
+        {
+            return flow.Tasks.Where(task => task.Status == CoreFlowTaskStatus.Active).ToList();
         }
 
         // Check if object is null and throw an exception

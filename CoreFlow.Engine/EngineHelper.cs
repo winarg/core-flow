@@ -21,9 +21,9 @@
             return flow.Tasks.SingleOrDefault(c => c.TaskType == CoreFlowTaskType.Start);
         }
 
-        public IList<ICoreFlowTransition> GetTaskTransitions(ICoreFlowEntity flow, ICoreFlowTask task, bool completed = false)
+        public IList<CoreFlowTransition> GetTaskTransitions(ICoreFlowEntity flow, ICoreFlowTask task, bool completed = false)
         {
-            return flow.Transitions.Where(c => c.FromTask == task && completed).ToList();
+            return flow.Transitions.Where(c => c.FromTask == task && !completed).ToList();
         }
 
         public ICoreFlowTransition GetTransition(ICoreFlowEntity flow, ICoreFlowTask task, int transitionId)
@@ -31,14 +31,14 @@
             return flow.Transitions.FirstOrDefault(c => c.Id == transitionId && c.FromTask == task);
         }
 
-        public IList<ICoreFlowTask> GetActiveTasks(ICoreFlowEntity flow)
+        public IList<CoreFlowTask> GetActiveTasks(ICoreFlowEntity flow)
         {
             return flow.Tasks.Where(c => c.Status == CoreFlowTaskStatus.Active).ToList();
         }
 
         public bool CanFlowBeCompleted(ICoreFlowEntity flow)
         {
-            return (flow.Status == CoreFlowStatus.Active && GetActiveTasks(flow).Count != 0);
+            return (flow.Status == CoreFlowStatus.Active && GetActiveTasks(flow).Count == 0);
         }
     }
 }
