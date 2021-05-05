@@ -8,6 +8,7 @@
         DateTime? DateActivated { get; set; }
         DateTime? DateCompleted { get; set; }
 
+        CoreFlowTaskType TaskType { get; set; }
         CoreFlowTaskStatus Status { get; set; }
 
         ICoreFlowEntity FlowCore { get; set; }

@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreFlow\CoreFlow.Model.csproj" />
+    <ProjectReference Include="..\CoreFlow.Model\CoreFlow.Model.csproj" />
   </ItemGroup>
-
 </Project>
