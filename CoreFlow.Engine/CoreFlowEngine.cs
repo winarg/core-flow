@@ -26,17 +26,13 @@ namespace CoreFlow.Engine
             flow.Status = CoreFlowStatus.Active;
             flow.DateStarted = DateTime.UtcNow;
 
+            if (flow.OnActivated != null)
+                flow.OnActivated.Invoke();
+
             var startTask = _engineHelper.GetEntryTask(flow);
 
             ActivateTask(flow, startTask);
             CompleteTask(flow, startTask);
-
-            //var startTaskTransitions = _engineHelper.GetTaskTransitions(flow, startTask);
-
-            //foreach (var transition in startTaskTransitions)
-            //{
-            //    ActivateTask(flow, transition.ToTask);
-            //}
 
             return true;
         }
@@ -61,6 +57,10 @@ namespace CoreFlow.Engine
 
                 flow.Status = CoreFlowStatus.Completed;
                 flow.DateCompleted = DateTime.UtcNow;
+
+                if (flow.OnCompleted != null)
+                    flow.OnCompleted.Invoke();
+
                 return true;
             }
 

@@ -22,19 +22,32 @@
         {
             CoreFlowEntity testFlow = new();
 
-            bool onActivatedWasRun = false;
-            bool onCompletedWasRun = false;
+            bool onActivatedFlowWasRun = false;
+            bool onCompletedFlowWasRun = false;
+
+            testFlow.OnActivated = () =>
+            {
+                onActivatedFlowWasRun = true;
+            };
+
+            testFlow.OnCompleted = () =>
+            {
+                onCompletedFlowWasRun = true;
+            };
+
+            bool onActivatedTaskWasRun = false;
+            bool onCompletedTaskWasRun = false;
 
             // Tasks
             var taskStart = new CoreFlowTask("Start", CoreFlowTaskType.Start);
             var taskAction = new CoreFlowTask("Action", CoreFlowTaskType.Action);
-            taskAction.OnActivated = t => {
-                onActivatedWasRun = true;
+            taskAction.OnActivated = () => {
+                onActivatedTaskWasRun = true;
                 Console.WriteLine("Task Action was activated");
             };
 
-            taskAction.OnCompleted = t => {
-                onCompletedWasRun = true;
+            taskAction.OnCompleted = () => {
+                onCompletedTaskWasRun = true;
                 Console.WriteLine("Task Action was completed");
             };
 
@@ -62,8 +75,12 @@
             }
 
             Assert.AreEqual(CoreFlowStatus.Completed, testFlow.Status);
-            Assert.IsTrue(onActivatedWasRun);
-            Assert.IsTrue(onCompletedWasRun);
+
+            Assert.IsTrue(onActivatedTaskWasRun);
+            Assert.IsTrue(onCompletedTaskWasRun);
+
+            Assert.IsTrue(onActivatedFlowWasRun);
+            Assert.IsTrue(onCompletedFlowWasRun);
         }
 
         [Test]

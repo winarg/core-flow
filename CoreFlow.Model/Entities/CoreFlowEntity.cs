@@ -14,6 +14,9 @@
         public IList<CoreFlowTask> Tasks { get; set; }
         public IList<CoreFlowTransition> Transitions { get; set; }
 
+        public Action OnActivated { get; set; }
+        public Action OnCompleted { get; set; }
+
         public CoreFlowEntity()
         {
             Tasks = new List<CoreFlowTask>();

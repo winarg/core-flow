@@ -14,5 +14,8 @@
 
         IList<CoreFlowTask> Tasks { get; set; }
         IList<CoreFlowTransition> Transitions { get; set; }
+
+        Action OnActivated { get; set; }
+        Action OnCompleted { get; set; }
     }
 }
