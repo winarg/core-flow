@@ -48,6 +48,9 @@ namespace CoreFlow.Engine
             if (task.OnActivated != null)
                 task.OnActivated.Invoke();
 
+            if (!_engineHelper.CanTaskBeActivated(flow, task))
+                return false;
+
             if (task.TaskType == CoreFlowTaskType.End) {
                 if (!_engineHelper.CanFlowBeCompleted(flow))
                     return true;

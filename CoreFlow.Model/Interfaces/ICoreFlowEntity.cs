@@ -12,8 +12,8 @@
 
         CoreFlowStatus Status { get; set; }
 
-        IList<CoreFlowTask> Tasks { get; set; }
-        IList<CoreFlowTransition> Transitions { get; set; }
+        IList<CoreFlowTask> Tasks { get; }
+        IList<CoreFlowTransition> Transitions { get; }
 
         Action OnActivated { get; set; }
         Action OnCompleted { get; set; }

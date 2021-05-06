@@ -40,5 +40,64 @@
         {
             return (flow.Status == CoreFlowStatus.Active && GetActiveTasks(flow).Count == 0);
         }
+
+        public bool CanTaskBeActivated(ICoreFlowEntity flow, ICoreFlowTask task)
+        {
+            var activeTasks = GetActiveTasks(flow);
+            if(!activeTasks.Any())
+                return true;
+
+            foreach (var currentActiveTask in activeTasks)
+            {
+                if (CanGoToTask(flow, currentActiveTask, task))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Returns if there is a way to reach one task from another
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="fromTask"></param>
+        /// <param name="toTask"></param>
+        /// <returns></returns>
+        public bool CanGoToTask(ICoreFlowEntity flow, ICoreFlowTask fromTask, ICoreFlowTask toTask)
+        {
+            return GetPathsFromTaskToTask(flow, fromTask, toTask).Any();
+        }
+
+        /// <summary>
+        /// Returns a list with all possible paths from a task to another
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="fromTask"></param>
+        /// <param name="toTask"></param>
+        /// <returns></returns>
+        public List<ICoreFlowTransition> GetPathsFromTaskToTask(ICoreFlowEntity flow, ICoreFlowTask fromTask, ICoreFlowTask toTask)
+        {
+            var transitionsFromTask = GetTaskTransitions(flow, fromTask);
+
+            var validTransitions = new List<ICoreFlowTransition>();
+
+            foreach (var currentTransition in transitionsFromTask)
+            {
+                if (currentTransition.ToTask == toTask)
+                {
+                    validTransitions.Add(currentTransition);
+                    continue;
+                }
+
+                var currentTaskValidTransitions = GetPathsFromTaskToTask(flow, currentTransition.ToTask, toTask);
+                if (!currentTaskValidTransitions.Any())
+                    continue;
+
+                validTransitions.Add(currentTransition);
+                validTransitions.AddRange(currentTaskValidTransitions);
+            }
+
+            return validTransitions;
+        }
     }
 }
