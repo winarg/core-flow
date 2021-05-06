@@ -19,6 +19,7 @@ namespace CoreFlow.Engine
         public bool StartFlow(ICoreFlowEntity flow)
         {
             CheckIfNull(flow);
+            _engineHelper.IsFlowValid(flow);
 
             if (flow.Status != Model.Enums.CoreFlowStatus.NotStarted)
                 throw new CoreFlowException("Only NotStarted flow can be started!");

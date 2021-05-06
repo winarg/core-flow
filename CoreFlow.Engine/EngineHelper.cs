@@ -99,5 +99,33 @@
 
             return validTransitions;
         }
+
+        public bool IsFlowValid(ICoreFlowEntity flow)
+        {
+            if (flow.Tasks.Count(task => task.TaskType == CoreFlowTaskType.Start) != 1)
+                throw new Exception("One start task is required.");
+
+            if (!flow.Tasks.Any(task => task.TaskType == CoreFlowTaskType.End))
+                throw new Exception("At least one end task is required.");
+
+            if(!flow.Transitions.Any(trs => trs.FromTask.TaskType == CoreFlowTaskType.Start))
+                throw new Exception("At least one transition must begin from the start task.");
+
+            var endTasks = flow.Tasks.Where(task => task.TaskType == CoreFlowTaskType.End).ToList();
+            foreach (var endTask in endTasks) 
+            {
+                if (!flow.Transitions.Any(trs => trs.ToTask == endTask))
+                    throw new Exception("At least one transition must reach an end task.");
+            }
+
+            if (!flow.Transitions.Any(trs => trs.FromTask.TaskType == CoreFlowTaskType.Start))
+                throw new Exception("At least one transition must begin from the start task.");
+
+            var tasksWithTransitions = flow.Transitions.Where(c => c.FromTask.TaskType == CoreFlowTaskType.Action).Select(c => c.FromTask).Distinct().ToList();
+            if(tasksWithTransitions.Count != flow.Tasks.Count(task => task.TaskType == CoreFlowTaskType.Action))
+                throw new Exception("Action tasks must connect with each other .");
+
+            return true;
+        }
     }
 }
